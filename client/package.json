@@ -14,7 +14,8 @@
     "browser-image-compression": "^2.0.2",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.18.5"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.6.0",
