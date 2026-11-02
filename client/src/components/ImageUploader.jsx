@@ -14,19 +14,45 @@ const cameraInputRef = useRef(null); // Camera
   const [dragging, setDragging] = useState(false);
 
   async function acceptFile(candidate) {
-    setError('');
-    if (!candidate) return;
-    if (!TYPES.includes(candidate.type)) { setError('Choose a JPEG, PNG or WebP image.'); return; }
-    if (candidate.size > MAX_SIZE) { setError('This image is larger than 5 MB. Choose a smaller file.'); return; }
-    try {
-      const compressed = await imageCompression(candidate, { maxSizeMB: 1, maxWidthOrHeight: 1800, useWebWorker: true });
-      const normalized = new File([compressed], candidate.name, { type: compressed.type || candidate.type, lastModified: Date.now() });
-      setFile(normalized);
-      setPreview(URL.createObjectURL(normalized));
-    } catch {
-      setError('The image could not be prepared. Try another image.');
-    }
+  setError('');
+  if (!candidate) return;
+
+  if (!TYPES.includes(candidate.type)) {
+    setError('Choose a JPEG, PNG or WebP image.');
+    return;
   }
+
+  try {
+    // Compress BEFORE checking the 5 MB limit
+    const compressed = await imageCompression(candidate, {
+      maxSizeMB: 4.5,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true
+    });
+
+    // Check final compressed size
+    if (compressed.size > MAX_SIZE) {
+      setError('Image is still larger than 5 MB after compression. Try another image.');
+      return;
+    }
+
+    const normalized = new File(
+      [compressed],
+      candidate.name,
+      {
+        type: compressed.type || candidate.type,
+        lastModified: Date.now()
+      }
+    );
+
+    setFile(normalized);
+    setPreview(URL.createObjectURL(normalized));
+
+  } catch (error) {
+    console.error('Image compression failed:', error);
+    setError('Image compression failed. Please try another image.');
+  }
+}
   function clear() {
     if (preview) URL.revokeObjectURL(preview);
     setPreview(''); setFile(null); setError('');
