@@ -61,7 +61,30 @@ const cameraInputRef = useRef(null); // Camera
   function submit() { if (file && !busy) onSelect(file); }
 
   return <div className="upload-card">
-    <input ref={inputRef} className="visually-hidden" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" onChange={event => acceptFile(event.target.files?.[0])} />
+    {/* Gallery input */}
+<input
+  ref={inputRef}
+  className="visually-hidden"
+  type="file"
+  accept="image/jpeg,image/png,image/webp"
+  onChange={event => {
+    acceptFile(event.target.files?.[0]);
+    event.target.value = '';
+  }}
+/>
+
+{/* Camera input */}
+<input
+  ref={cameraInputRef}
+  className="visually-hidden"
+  type="file"
+  accept="image/*"
+  capture="environment"
+  onChange={event => {
+    acceptFile(event.target.files?.[0]);
+    event.target.value = '';
+  }}
+/>
     {!preview ? <div className={`drop-zone ${dragging ? 'dragging' : ''}`} onDragOver={event => { event.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={event => { event.preventDefault(); setDragging(false); acceptFile(event.dataTransfer.files?.[0]); }}>
       <div className="upload-symbol"><CloudUpload size={25} strokeWidth={1.6}/></div>
       <h3>Drop a plant photo here</h3>
