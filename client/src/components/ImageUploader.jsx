@@ -6,7 +6,8 @@ const MAX_SIZE = 5 * 1024 * 1024;
 const TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 export function ImageUploader({ onSelect, busy }) {
-  const inputRef = useRef(null);
+  cconst inputRef = useRef(null); // Gallery
+const cameraInputRef = useRef(null); // Camera
   const [preview, setPreview] = useState('');
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
