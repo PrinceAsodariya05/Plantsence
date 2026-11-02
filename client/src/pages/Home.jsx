@@ -3,6 +3,7 @@ import { Leaf, Clock3, Search, AlertCircle, Sprout } from 'lucide-react';
 import { ImageUploader } from '../components/ImageUploader.jsx';
 import { PlantDashboard } from '../components/PlantDashboard.jsx';
 import { usePlantScan } from '../hooks/usePlantScan.js';
+import logo from '../lib/branding.js';
 
 export default function Home() {
   const sessionId = useMemo(() => {
@@ -24,7 +25,7 @@ export default function Home() {
   function submit(file) { setActive(null); scanMutation.mutate({ file }, { onSuccess: setActive }); }
 
   return <div className="app-shell">
-    <header className="topbar"><a className="brand" href="/" aria-label="PlantSense home"><span className="brand-mark"><Leaf size={21}/></span><span><strong>plantsense</strong><small>PLANT IDENTIFICATION</small></span></a><span className="topbar-note">A practical field guide</span></header>
+    <header className="topbar"><a className="brand" href="/" aria-label="PlantSense home"><span className="brand-mark"><img src={logo} alt="" /></span><span><strong>plantsense</strong><small>PLANT IDENTIFICATION</small></span></a><span className="topbar-note">A practical field guide</span></header>
     <main className="page-wrap">
       <section className="intro"><p className="eyebrow">IDENTIFY · UNDERSTAND · CARE</p><h1>Know the plant.<br/><span>Care for it well.</span></h1><p className="intro-copy">Upload a clear photo of a leaf, flower or whole plant. Get an identification and a practical care guide based on the result.</p></section>
       <section className="workspace">
